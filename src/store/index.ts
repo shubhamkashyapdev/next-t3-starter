@@ -9,6 +9,6 @@ export const useIStore = create<ITCombineStore>()(
     (...a) => ({
       ...createAuthSlice(...a),
     }),
-    { enabled: env.APP_ENV === "development" ? true : false }
+    { enabled: env.NEXT_PUBLIC_APP_ENV === "development" ? true : false }
   )
 );

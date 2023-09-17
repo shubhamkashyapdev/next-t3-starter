@@ -1,12 +1,19 @@
 import { signIn, signOut, useSession } from "next-auth/react";
+import { UserButton } from "@clerk/nextjs";
 import Head from "next/head";
 import Link from "next/link";
+import { useState } from "react";
 import { useIStore } from "~/store";
 import { api } from "~/utils/api";
+import Button from "~/components/button/Button";
 
 export default function Home() {
   const { value } = useIStore();
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
+  const [count, setCount] = useState(0);
+  const increment = () => setCount((prevCount) => prevCount + 1);
+  const decrement = () => setCount((prevCount) => prevCount - 1);
+
   return (
     <>
       <Head>
@@ -15,6 +22,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+        <div>
+          <UserButton afterSignOutUrl="/" />
+        </div>
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
           <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
             Create <span className="text-[hsl(280,100%,70%)]">T3</span> App -{" "}
@@ -43,6 +53,17 @@ export default function Home() {
                 to deploy it.
               </div>
             </Link>
+          </div>
+          <div className="flex gap-2 rounded-xl border-2 border-indigo-800  bg-indigo-600 p-4 shadow-sm shadow-indigo-700">
+            <Button className="bg-indigo-800" onClick={decrement}>
+              Decrement
+            </Button>
+            <div className="rounded-md border-2 border-indigo-800 bg-indigo-700 p-2 font-semibold text-white">
+              Count {count}
+            </div>
+            <Button className="bg-indigo-900" onClick={increment}>
+              Increment
+            </Button>
           </div>
           <div className="flex flex-col items-center gap-2">
             <p className="text-2xl text-white">
